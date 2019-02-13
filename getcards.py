@@ -3,7 +3,6 @@ import json
 import csv
 import random
 import string
-from pprint import pprint
 
 with open("config.json") as configfile:
 	config = json.load(configfile)
