@@ -5,9 +5,13 @@ import random
 import string
 
 with open("config.json") as configfile:
-	config = json.load(configfile)
-	phantom = config['phantom']
-	config = config['config']
+	try:
+		config = json.load(configfile)
+		phantom = config['phantom']
+		ghost = config['ghost']
+		config = config['config']
+	except:
+		print("Did you forget to rename the files? Bozo move...")
 
 def prelogin():
 	headers = {
@@ -42,7 +46,7 @@ def login(sessionid):
 		'Origin': 'https://privacy.com',
 		'Accept-Encoding': 'gzip, deflate, br',
 		'Accept-Language': 'en-US,en;q=0.9,es;q=0.8',
-		'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
+		'User-Agent': 'privacy-app/2.11.0.3 iOS/12.0',
 		'Content-Type': 'application/json;charset=UTF-8',
 		'Accept': 'application/json, text/plain, */*',
 		'Referer': 'https://privacy.com/login',
@@ -115,7 +119,7 @@ def getCards(token,sessionid):
 		'Host': 'privacy.com',
 		'Origin': 'https://privacy.com',
 		'Referer': 'https://privacy.com/home',
-		'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36'
+		'User-Agent': 'privacy-app/2.11.0.3 iOS/12.0',
 	}
 	print('Getting cards...')
 	r = requests.get('https://privacy.com/api/v1/card',cookies=cookies, headers=headers)
@@ -144,32 +148,31 @@ def genName():
 def genPhone(phone):
 	phone = str(phone)
 	area = phone[:3]
-	digits = random.randrange(111111,999999)
+	digits = random.randrange(1111111,9999999)
 	return str(area) + str(digits)
 
-
-def writePhantom(info, cards):
+def writeGhost(info, cards):
 	with open('cardfile.csv', mode='w') as cardfile:
 		cardfile = csv.DictWriter(cardfile, info.keys(), lineterminator='\n')
 		cardfile.writeheader()
 		for card in cards['cardList']:
 			if card['state'] == 'OPEN':
-				export = info.copy()
-				if (config['jigname'] == True):
-					export['First Name'], export['Last Name'] = genName()
-				if (config['jigphone'] == True):
-					export['Phone'] = genPhone(export['Phone'])
-				if (config['jigaddress'] == True):
-					export['Shipping Address'] = jigStreet(export['Shipping Address'])
-					export['Billing Address'] = export['Shipping Address']
-				export['Profile Name'] = card['memo']
-				export['Card Number'] = card['PAN']
-				export['Card Type'] = 'visa'
-				export['CVV'] = card['CVV']
-				export['Expiry Month'] = card['expMonth']
-				export['Expiry Year'] = card['expYear']
-				cardfile.writerow(export)
-			
+				if ((config['unused'] and card['unused']) or (not config['unused'])):
+					export = info.copy()
+					if (config['jigname']):
+						export['First Name'], export['Last Name'] = genName()
+					if (config['jigphone']):
+						export['Phone'] = genPhone(export['Phone'])
+					if (config['jigaddress']):
+						export['Shipping Address'] = jigStreet(export['Shipping Address'])
+						export['Billing Address'] = export['Shipping Address']
+					export['Profile Name'] = card['memo']
+					export['Card Number'] = card['PAN']
+					export['Card Type'] = 'visa'
+					export['CVV'] = card['CVV']
+					export['Expiry Month'] = card['expMonth']
+					export['Expiry Year'] = card['expYear']
+					cardfile.writerow(export)
 
 
 def main():
@@ -180,7 +183,9 @@ def main():
 	cards = getCards(token,sessionid)
 	if (cards != None):
 		if (config['export'] == 'phantom'):
-			writePhantom(phantom, cards)
+			writeGhost(phantom, cards)
+		elif(config['export'] == 'ghost'):
+			writeGhost(ghost, cards)
 
 main()
 
