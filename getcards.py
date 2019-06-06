@@ -4,14 +4,25 @@ import csv
 import random
 import string
 
-with open("config.json") as configfile:
-	try:
+try:
+	with open("config.json") as configfile:
 		config = json.load(configfile)
 		phantom = config['phantom']
 		ghost = config['ghost']
 		config = config['config']
-	except:
-		print("Did you forget to rename the files? Bozo move...")
+		if (config['username'] == "EMAIL"):
+			username = input("Enter your username: ")
+			config['username'] = username
+		if (config['password'] == "PASSWORD"):
+			password = input("Enter your password: ")
+			config['password'] = password
+		if (config['export'] == "EXPORT"):
+			export = input("Enter desired export type: ")
+			config['export'] = export
+		print("User, pass, export saved to config file.")
+except:
+	print("Did you forget to rename the files? Bozo move...")
+	exit()
 
 def prelogin():
 	headers = {

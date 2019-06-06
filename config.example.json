@@ -1,15 +1,16 @@
 {
 	"config":{
-		"username":"email@gmail.com",
-		"password":"password",
-		"export":"phantom",
-		"jigphone":true,
-		"jigname":true,
-		"jigaddress":true
+		"username":"EMAIL",
+		"password":"PASSWORD",
+		"export":"EXPORT",
+		"jigphone":false,
+		"jigname":false,
+		"jigaddress":false,
+		"unused":false
 	},
 	"phantom":{
 		"Profile Name":"",
-		"Email":"catchall@catchall.com or normal email",
+		"Email":"catchall.com or normal email",
 		"First Name":"Alice",
 		"Last Name":"Bob",
 		"Shipping Address":"21 Copalot St",
@@ -31,5 +32,28 @@
 		"Expiry Year":"",
 		"Same B&S":true,
 		"One Checkout Per Profile":false
+	},
+	"ghost":{
+		"Profile Name":"",
+		"First Name":"Alice",
+		"Last Name":"Bob",
+		"Shipping Address":"21 Copalot St",
+		"Shipping Apt":"#69",
+		"Shipping City":"New York",
+		"Shipping State":"NY",
+		"Shipping Zip":"00000",
+		"Billing Address":"21 Copalot St",
+		"Billing Apt":"#69",
+		"Billing City":"New York",
+		"Billing State":"NY",
+		"Billing Zip":"00000",
+		"Country":"US",
+		"Phone":"1234567890",
+		"Card Number":"",
+		"Card Type":"",
+		"CVV":"",
+		"Expiry Month":"",
+		"Expiry Year":"",
+		"Same B&S":true,
 	}
 }
