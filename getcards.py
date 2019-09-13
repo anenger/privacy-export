@@ -20,7 +20,8 @@ try:
 			export = input("Enter desired export type: ")
 			config['export'] = export
 		print("User, pass, export saved to config file.")
-except:
+except Exception as e:
+	print(e)
 	print("Did you forget to rename the files? Bozo move...")
 	exit()
 
@@ -155,6 +156,11 @@ def genName():
 	firstname = ['Roosevelt','Fred','Christian','Alden','Virgilio','Lyman','Irving','Sidney','Shelby','Lewis','Bernardo','Jeramy','Carlos','Tuan','Wayne','Andres','Devon','Tomas','Luther','Norbert','Judson','Gerard','Brenton','Patrick','Saul','Williams','Jim','Herschel','Jackie','Lane','Anibal','Emile','Dale','Miquel','Harley','Jerome','Javier','Conrad','Lino','Ariel','Wyatt','Oscar','Carol','Forrest','Major','Horacio','Ernie','Garrett','Jere','Morton','Teddy','Bud','Cary','Samual','Enrique','Armando','Jeramy','Lonny','Mitchell','Noah','Pierre','Nathan','Cristopher','Elroy','Kent','Gustavo','Hal','Quincy','Guy','Kris','Rod','Sanford','Brett','Jamaal','Jonah','Leon','Dana','Giovanni','Scott','Danny','Dominique','Clifford','Claudio','Sandy','Raphael','Carrol','Leigh','Mathew','Lucien','Hong','Jarvis','Brenton','Bertram','Gary','Johnathon','Kelvin','Austin','Harris','Sean','Jacques']
 	lastname = ['Rison','Shireman','Outlaw','Launius','Dear','Creswell','Rasor','Tsui','Roos','Kisner','Slavens','Friedlander','Pages','Gloor','Gryder','Masone','Litteral','Belt','Remo','Mixer','Izaguirre','Fleeman','Grizzard','Shiver','Kimberly','Cale','Grimshaw','Worden','Solberg','Cousar','Heatley','Cornforth','Mata','Styer','Huntington','Ragsdale','Allums','Tarnowski','Blodgett','Sipe','Zamudio','Heppner','Ornellas','Justis','Cranford','Cosper','Altizer','John','Hy','Stannard','Gale','Vanriper','Clutts','Mcshane','Simonetti','Gorton','Flaherty','Jeppesen','Kottke','Clatterbuck','Bilger','Lanham','Moffit','Troester','Dimaio','Pawlik','Lazenby','Loth','Wix','Madison','Mee','Hames','Cratty','Mccook','Wroblewski','Rushin','Stainbrook','Rachel','Kesner','Hesser','Rundle','Delahoussaye','Norrell','Riese','Andre','Erdman','Studivant','Dark','Northam','Sheehy','Yazzie','Buss','Fabiani','Hargrave','Kondo','Leclair','Dipaolo','Knudson','Pillow','Gearing']
 	return random.choice(firstname), random.choice(lastname)
+	
+def jigName():
+	firstname = ['Andrew', 'Joan', 'Kyle', 'Kate', 'Grace', 'Drew', 'Katie', 'Gracie']
+	lastname = ['Enger', 'Egner']
+	return random.choice(firstname), random.choice(lastname)
 
 def genPhone(phone):
 	phone = str(phone)
@@ -171,7 +177,7 @@ def writeGhost(info, cards):
 				if ((config['unused'] and card['unused']) or (not config['unused'])):
 					export = info.copy()
 					if (config['jigname']):
-						export['First Name'], export['Last Name'] = genName()
+						export['First Name'], export['Last Name'] = jigName()
 					if (config['jigphone']):
 						export['Phone'] = genPhone(export['Phone'])
 					if (config['jigaddress']):
