@@ -214,7 +214,7 @@ def genName():
 	return random.choice(firstname), random.choice(lastname)
 	
 def jigName():
-	firstname = ['Andrew', 'Joan', 'Kyle', 'Kate', 'Grace', 'Drew', 'Katie', 'Gracie']
+	firstname = ['Andrew', 'Joan', 'Kyle', 'Kate', 'Grace', 'Drew', 'Katie', 'Gracie', 'Horace', 'Kurt', 'Carolyn', 'Christine', 'JPatryce', 'Isola']
 	lastname = ['Enger', 'Egner']
 	return random.choice(firstname), random.choice(lastname)
 
