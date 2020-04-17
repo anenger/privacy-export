@@ -31,29 +31,6 @@ def writeGhost(info, cards):
 				export['Expiry Year'] = card['expYear']
 				cardfile.writerow(export)
 
-def writeEzMode(info, cards):
-	with open('cardfile.csv', mode='w') as cardfile:
-		cardfile = csv.DictWriter(cardfile, info.keys(), lineterminator='\n')
-		cardfile.writeheader()
-		for card in cards['cardList']:
-			if card['state'] == 'OPEN':
-				export = info.copy()
-				if (config['jigname']):
-					export['BillingFirstName'], export['BillingLastName'] = jigName()
-					export['NameOnCard'] = export['BillingFirstName'] + ' ' + export['BillingLastName']
-				if (config['jigphone']):
-					export['BillingPhoneNumber'] = genPhone(export['BillingPhoneNumber'])
-				if (config['jigaddress']):
-					export['BillingAddressLine1'] = jigStreet(export['BillingAddressLine1'])
-				export['ProfileName'] = card['memo']
-				export['Email'] = prefix + str(random.randrange(111,999)) + '@' + export['Email']
-				export['CardNumber'] = card['PAN']
-				export['CreditCardType'] = 'Visa'
-				export['Cvv'] = card['CVV']
-				export['ExpiryDateMonth'] = card['expMonth']
-				export['ExpiryDateYear'] = card['expYear']
-				cardfile.writerow(export)
-
 def writeEzMode2(info, cards):
 	with open('cardfile.csv', mode='w') as cardfile:
 		cardfile = csv.DictWriter(cardfile, info.keys(), lineterminator='\n')

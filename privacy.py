@@ -1,5 +1,6 @@
 import requests
-import card
+from card import Card
+from pprint import pprint
 
 class PrivacySession:
     sessionid = ""
@@ -75,17 +76,17 @@ class PrivacySession:
     	else:
     		print(str(r.status_code) + ': Bad response when posting login form - ' + r.text)
 
-    def getTransactions(self,token,sessionid):
+    def getTransactions(self):
     	cookies = {
-    		'sessionID':sessionid,
-    		'token':token,
+    		'sessionID':self.sessionid,
+    		'token':self.token,
     		'ETag':'"ps26i5unssI="'
     	}
     	headers = {
     		'Accept': 'application/json, text/plain, */*',
     		'Accept-Encoding': 'gzip, deflate, br',
     		'Accept-Language': 'en-US,en;q=0.9',
-    		'Authorization': 'Bearer ' + token,
+    		'Authorization': 'Bearer ' + self.token,
     		'Cache-Control': 'no-cache',
     		'Connection': 'keep-alive',
     		'Content-Type': 'application/json;charset=UTF-8',
@@ -107,9 +108,9 @@ class PrivacySession:
     		print('Bad response when getting transactions with code - ' + r.text)
 
 
-    def findNewCards():
+    def findNewCards(self, cards, transactions):
     	usedcardids = []
-    	newcards = {'cardList':[]}
+    	newcards = []
     	for transaction in transactions['transactionList']:
     		if (transaction['cardID'] not in usedcardids):
     			usedcardids.append(transaction['cardID'])
@@ -118,24 +119,24 @@ class PrivacySession:
     		if (transaction['cardID'] not in usedcardids):
     			usedcardids.append(transaction['cardID'])
 
-    	for card in cards['cardList']:
-    		if (int(card['cardID']) not in usedcardids) or card['unused']:
-    			newcards['cardList'].append(card)
+    	for card in cards:
+    		if (int(card.id) not in usedcardids) or card.unused:
+    			newcards.append(card)
 
     	return newcards
 
 
-    def getCards(self,token,sessionid):
+    def getCards(self):
     	cookies = {
-    		'sessionID':sessionid,
-    		'token':token,
+    		'sessionID':self.sessionid,
+    		'token':self.token,
     		'ETag':'"ps26i5unssI="'
     	}
     	headers = {
     		'Accept': 'application/json, text/plain, */*',
     		'Accept-Encoding': 'gzip, deflate, br',
     		'Accept-Language': 'en-US,en;q=0.9',
-    		'Authorization': 'Bearer ' + token,
+    		'Authorization': 'Bearer ' + self.token,
     		'Cache-Control': 'no-cache',
     		'Connection': 'keep-alive',
     		'Content-Type': 'application/json;charset=UTF-8',
@@ -149,10 +150,14 @@ class PrivacySession:
     	r = requests.get('https://privacy.com/api/v1/card',cookies=cookies, headers=headers)
     	print('Got card response')
     	if (r.status_code == requests.codes.ok):
-    		try:
-    			for (card in r.json()):
-                    
-    		except:
-    			print("Error getting cards")
+            try:
+                cardlist = []
+                for card in r.json()['cardList']:
+                    if card['state'] == "OPEN":
+                        cardlist.append(Card(card['cardID'], card['PAN'], card['CVV'], card['expMonth'], card['expYear'], card['unused']))
+                return cardlist
+            except Exception as e:
+                print(e)
+                print("Error getting cards")
     	else:
     		print('Bad response when getting cards with code - ' + r.text)

@@ -1,1 +1,8 @@
+#ignoring cardfile for privacy
 cardfile.csv
+
+#ignoring user saved settings
+*.json
+
+#dont ignore config for bots
+!config.json
