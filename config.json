@@ -1,15 +1,4 @@
 {
-	"config":{
-		"username":"EMAIL",
-		"password":"PW",
-		"export":"ezmode2",
-		"merchant":"",
-		"jigphone":false,
-		"jigname":false,
-		"jigaddress":false,
-		"unused":true,
-		"prefix":"EMAILPREFIX"
-	},
 	"phantom":{
 		"Profile Name":"",
 		"Email":"catchall.com",
@@ -57,26 +46,6 @@
 		"Expiry Month":"",
 		"Expiry Year":"",
 		"Same B&S":true
-	},
-	"ezmode":{
-		"ProfileName":"",
-		"Email":"CATCHALL",
-		"IsCheckoutOncePerBilling":false,
-		"CreditCardType":"",
-		"NameOnCard":"FNAME LNAME",
-		"CardNumber":"",
-		"Cvv":"",
-		"ExpiryDateMonth":"",
-		"ExpiryDateYear":"",
-		"BillingFirstName":"FNAME",
-		"BillingLastName":"LNAME",
-		"BillingCountry":"US",
-		"BillingCity":"CITY",
-		"BillingZipCode":"ZIP",
-		"BillingStateOrProvince":"STATE 2 LETTER",
-		"BillingPhoneNumber":"PHONE",
-		"BillingAddressLine1":"STREET",
-		"BillingAddressLine2":""
 	},
 	"ezmode2":{
 		"ProfileName":"",
