@@ -8,30 +8,35 @@ class CSVIO:
     template = ""
     generator = ""
 
-    def __init__(self, infile, outfile, template, generator):
+    def __init__(self, infile, outfile, templates, generator):
         self.infile = infile
         self.outfile = outfile
-        self.template = template
+        self.templates = templates
         self.generator = generator
 
-        def writeEZMode(self, cards):
-            with open(self.outfile, mode='w') as cardfile:
-                cardfile = csv.DictWriter(cardfile, self.template.keys(), lineterminator='\n')
-                cardfile.writeheader()
-                for card in cards:
-                    export = self.template.copy()
-                    export['BillingFirst'], export['BillingLast'] = jigName()
-                    export['CardName'] = export['BillingFirst'] + ' ' + export['BillingLast']
-                    export['BillingPhone'] = genPhone(export['BillingPhone'])
-                    export['BillingLine1'] = jigStreet(export['BillingLine1'])
-                    export['ProfileName'] = card['memo']
-                    export['Email'] = 
-                    export['CardNumber'] = card.number
-                    export['CardType'] = card.type
-                    export['CardCVV'] = card.cvv
-                    export['CardMonth'] = card.exp_month
-                    export['CardYear'] = card.exp_year
-                    cardfile.writerow(export)
+    def writeEZMode(self, cards):
+        with open(self.outfile, mode='w') as cardfile:
+            cardfile = csv.DictWriter(cardfile, self.templates['ezmode2'].keys(), lineterminator='\n')
+            cardfile.writeheader()
+            for card in cards:
+                export = self.templates['ezmode2'].copy()
+                export['BillingFirst'], export['BillingLast'] = self.generator.genName()
+                export['CardName'] = export['BillingFirst'] + ' ' + export['BillingLast']
+                export['BillingLine1'] = self.generator.genStreet()
+                export['BillingLine2'] = self.generator.addressline2
+                export['BillingCity'] = self.generator.city
+                export['BillingState'] = self.generator.state
+                export['BillingZip'] = self.generator.zip
+                export['BillingCountry'] = "US"
+                export['BillingPhone'] = self.generator.genPhone()
+                export['ProfileName'] = card.id
+                export['Email'] = self.generator.genEmail()
+                export['CardNumber'] = card.number
+                export['CardType'] = "Visa"
+                export['CardCVV'] = card.cvv
+                export['CardMonth'] = card.expmonth
+                export['CardYear'] = card.expyear
+                cardfile.writerow(export)
 
-    def readCSV(self,):
+    def readCSV(self):
         return

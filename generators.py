@@ -1,4 +1,5 @@
 import random
+import string
 
 us_state_abbrev = {
     'alabama': 'AL',
@@ -97,15 +98,23 @@ class Generator:
                 print("Could not find state in dict.")
                 return None
 
-    def jigStreet(self):
-        spaceindex = self.address.find(' ')
-        if (spaceindex >= 0):
-            number = address[:spaceindex]
-            street = address[spaceindex + 1:]
-            charactergen = random.choice(
-                string.ascii_uppercase) + random.choice(string.ascii_uppercase)
-            return str(number) + ' ' + charactergen + ' ' + street
+    def genEmail(self):
+        if (self.prefix is not ""):
+            return self.prefix + str(random.randrange(111,999)) + '@' + self.email
+        else:
+            return self.email
 
+    def genStreet(self):
+        if (self.jigAddress):
+            spaceindex = self.addressline1.find(' ')
+            if (spaceindex >= 0):
+                number = self.addressline1[:spaceindex]
+                street = self.addressline1[spaceindex + 1:]
+                charactergen = random.choice(
+                    string.ascii_uppercase) + random.choice(string.ascii_uppercase)
+                return str(number) + ' ' + charactergen + ' ' + street
+        else:
+            return self.addressline1
 
     def genName(self):
         if (type(self.firstname) is list) and (type(self.lastname) is list):
@@ -113,8 +122,11 @@ class Generator:
         else:
             return self.firstname, self.lastname
 
-    def jigPhone(self):
-        phone = str(self.phone)
-        area = phone[:3]
-        digits = random.randrange(1111111, 9999999)
-        return str(area) + str(digits)
+    def genPhone(self):
+        if (self.jigName):
+            phone = str(self.phone)
+            area = phone[:3]
+            digits = random.randrange(1111111, 9999999)
+            return str(area) + str(digits)
+        else:
+            return self.phone
