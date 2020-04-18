@@ -1,6 +1,6 @@
 import requests
 import stripe
-from card import Card
+from utils.card import Card
 
 class StripeSession:
 
@@ -30,6 +30,31 @@ class StripeSession:
             print(e)
             print("Could not create cardholder.")
             return
+
+    def activateCard(self, cardid):
+        try:
+            card = stripe.issuing.Card.modify(cardid, status="active")
+            return True
+        except Exception as e:
+            print(e)
+            print("Could not activate card.")
+            return False
+
+    def getAllCards(self):
+        cards = stripe.issuing.Card.list(limit=100,status="active")
+        carddata = []
+        for card in cards['data']:
+             carddata.append(self.getCardDetails(card['id']))
+        return carddata
+
+    def createCards(self, number, cardholder):
+        cards = []
+        for i in range(number):
+            cardid = self.createCard(cardholder)
+            activation = self.activateCard(cardid)
+            carddetails = self.getCardDetails(cardid)
+            cards.append(carddetails)
+        return cards
 
     def createCard(self, cardholder):
         try:

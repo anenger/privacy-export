@@ -71,7 +71,7 @@ class Generator:
     state = ""
     zip = ""
 
-    def __init__(self, firstname, lastname, email, phone, addressline1, addressline2, city, state, zip, prefix, jigName, jigPhone, jigAddress):
+    def __init__(self, firstname, lastname, email, phone, addressline1, addressline2, city, state, zip, prefix, jigPhone, jigAddress):
         self.firstname = firstname
         self.lastname = lastname
         self.email = email
@@ -82,7 +82,6 @@ class Generator:
         self.state = self.translateState(state)
         self.zip = zip
         self.prefix = prefix
-        self.jigName = jigName
         self.jigPhone = jigPhone
         self.jigAddress = jigAddress
 
@@ -99,8 +98,10 @@ class Generator:
                 return None
 
     def genEmail(self):
-        if (self.prefix is not ""):
-            return self.prefix + str(random.randrange(111,999)) + '@' + self.email
+        if ((self.email[0] == "@") and (self.prefix != "")):
+            return self.prefix + str(random.randrange(111,999)) + self.email
+        elif ((self.email[0] == "@") and (self.prefix == "")):
+            return self.genName() + str(random.randrange(111,999)) + self.email
         else:
             return self.email
 
@@ -117,13 +118,10 @@ class Generator:
             return self.addressline1
 
     def genName(self):
-        if (type(self.firstname) is list) and (type(self.lastname) is list):
-            return random.choice(self.firstname), random.choice(self.lastname)
-        else:
-            return self.firstname, self.lastname
+        return random.choice(self.firstname), random.choice(self.lastname)
 
     def genPhone(self):
-        if (self.jigName):
+        if (self.jigPhone):
             phone = str(self.phone)
             area = phone[:3]
             digits = random.randrange(1111111, 9999999)

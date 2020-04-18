@@ -1,6 +1,6 @@
 import csv
-from generators import Generator
-from card import Card
+from utils.generators import Generator
+from utils.card import Card
 
 class CSVIO:
     infile = ""

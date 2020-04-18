@@ -1,5 +1,5 @@
 import requests
-from card import Card
+from utils.card import Card
 from pprint import pprint
 
 class PrivacySession:
@@ -108,22 +108,21 @@ class PrivacySession:
     		print('Bad response when getting transactions with code - ' + r.text)
 
 
-    def findNewCards(self, cards, transactions):
-    	usedcardids = []
-    	newcards = []
-    	for transaction in transactions['transactionList']:
-    		if (transaction['cardID'] not in usedcardids):
-    			usedcardids.append(transaction['cardID'])
-
-    	for transaction in transactions['declineList']:
-    		if (transaction['cardID'] not in usedcardids):
-    			usedcardids.append(transaction['cardID'])
-
-    	for card in cards:
-    		if (int(card.id) not in usedcardids) or card.unused:
-    			newcards.append(card)
-
-    	return newcards
+    def findNewCards(self):
+        cards = self.getCards()
+        transactions = self.getTransactions()
+        usedcardids = []
+        newcards = []
+        for transaction in transactions['transactionList']:
+            if (transaction['cardID'] not in usedcardids):
+                usedcardids.append(transaction['cardID'])
+        for transaction in transactions['declineList']:
+            if (transaction['cardID'] not in usedcardids):
+                usedcardids.append(transaction['cardID'])
+        for card in cards:
+            if (int(card.id) not in usedcardids) or card.unused:
+                newcards.append(card)
+        return newcards
 
 
     def getCards(self):
