@@ -6,12 +6,10 @@ This is a python3 script. Please run it in python3 or else you will have issues.
 
 # To Run:
 
-Install the following required dependencies using pip or your choice of package manager:
+Navigate to the folder (probably privacy-export-master)
 
-requests  
-json  
-csv  
-random  
-string
+Install the following required dependencies using pip:
 
-Run using python3 getcards.py
+pip install -r requirements.txt
+
+Run using python getcards.py

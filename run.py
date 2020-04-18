@@ -2,6 +2,7 @@ import csv
 import json
 import random
 import string
+import sys
 from pprint import pprint
 
 import regex
@@ -13,6 +14,9 @@ from utils.csvutils import CSVIO
 from utils.generators import Generator
 from utils.privacy import PrivacySession
 from utils.stripeapi import StripeSession
+
+if sys.version_info[0] < 3:
+    raise Exception("Python 3 or a more recent version is required.")
 
 custom_style_1 = style_from_dict({
     Token.Separator: '#6C6C6C',
