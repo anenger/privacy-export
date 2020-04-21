@@ -5,7 +5,7 @@ cardfile.csv
 *.json
 
 #dont ignore config for bots
-!config.json
+!exports.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
