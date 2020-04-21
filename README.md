@@ -12,4 +12,4 @@ Install the following required dependencies using pip:
 
 pip install -r requirements.txt
 
-Run using python getcards.py
+Run using python run.py
