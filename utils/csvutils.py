@@ -16,8 +16,8 @@ class CSVIO:
 
     def writeEZMode(self, cards):
         with open(self.outfile, mode='w') as cardfile:
-            cardfile = csv.DictWriter(cardfile, self.templates['ezmode2'].keys(), lineterminator='\n')
-            cardfile.writeheader()
+            writer = csv.DictWriter(cardfile, self.templates['ezmode2'].keys(), lineterminator='\n')
+            writer.writeheader()
             for card in cards:
                 export = self.templates['ezmode2'].copy()
                 export['BillingFirst'], export['BillingLast'] = self.generator.genName()
@@ -36,7 +36,14 @@ class CSVIO:
                 export['CardCVV'] = card.cvv
                 export['CardMonth'] = card.expmonth
                 export['CardYear'] = card.expyear
-                cardfile.writerow(export)
+                writer.writerow(export)
 
     def readCSV(self):
-        return
+        cardlist = []
+        with open(self.infile, mode="r") as cardfile:
+            reader = csv.DictReader(cardfile, self.templates['import'].keys(), lineterminator="\n")
+            i = 0
+            for row in reader:
+                i+=1
+                cardlist.append(Card("Card{}".format(i), row['CardType'], row['CardNumber'], row['CardCVV'], row['CardMonth'], row['CardYear'], True))
+        return cardlist

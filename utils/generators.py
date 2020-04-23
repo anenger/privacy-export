@@ -85,6 +85,9 @@ class Generator:
         self.jigPhone = jigPhone
         self.jigAddress = jigAddress
 
+    def randomword(self, length):
+        letters = string.ascii_uppercase
+        return ''.join(random.choice(letters) for i in range(length))
 
     def translateState(self, state):
         if (len(state) == 2):
@@ -93,15 +96,16 @@ class Generator:
             try:
                 statecode = us_state_abbrev[state.lower()]
                 return statecode
-            except KeyError as e:
+            except KeyError:
                 print("Could not find state in dict.")
                 return None
 
     def genEmail(self):
         if ((self.email[0] == "@") and (self.prefix != "")):
-            return self.prefix + str(random.randrange(111,999)) + self.email
+            return "{0}{1}{2}{3}".format(self.prefix, self.randomword(2), str(random.randrange(111,999)), self.email)
         elif ((self.email[0] == "@") and (self.prefix == "")):
-            return self.genName() + str(random.randrange(111,999)) + self.email
+            name = self.genName()
+            return "{}{}{}{}".format(name[0], name[1], str(random.randrange(111,999)), self.email)
         else:
             return self.email
 

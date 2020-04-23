@@ -33,7 +33,7 @@ class StripeSession:
 
     def activateCard(self, cardid):
         try:
-            card = stripe.issuing.Card.modify(cardid, status="active")
+            stripe.issuing.Card.modify(cardid, status="active")
             return True
         except Exception as e:
             print(e)
@@ -51,7 +51,7 @@ class StripeSession:
         cards = []
         for i in range(number):
             cardid = self.createCard(cardholder)
-            activation = self.activateCard(cardid)
+            self.activateCard(cardid)
             carddetails = self.getCardDetails(cardid)
             cards.append(carddetails)
         return cards
@@ -77,7 +77,7 @@ class StripeSession:
                 unused = True
             else:
                 unused = False
-            return Card(card.card.id, card.number, card.cvc, card.exp_month, card.exp_year, unused)
+            return Card(card.card.id, "Visa", card.number, card.cvc, card.exp_month, card.exp_year, unused)
         except Exception as e:
             print(e)
             print("Could not retrieve card.")

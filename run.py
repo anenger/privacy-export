@@ -36,7 +36,7 @@ stateslist = ['AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL',
 class PhoneNumberValidator(Validator):
     def validate(self, document):
         ok = regex.match(
-            '^([01]{1})?[-.\s]?\(?(\d{3})\)?[-.\s]?(\d{3})[-.\s]?(\d{4})\s?((?:#|ext\.?\s?|x\.?\s?){1}(?:\d+)?)?$', document.text)
+            r'^([01]{1})?[-.\s]?\(?(\d{3})\)?[-.\s]?(\d{3})[-.\s]?(\d{4})\s?((?:#|ext\.?\s?|x\.?\s?){1}(?:\d+)?)?$', document.text)
         if not ok:
             raise ValidationError(
                 message='Please enter a valid phone number',
@@ -61,7 +61,7 @@ class NotBlankValidator(Validator):
 
 class ZipCodeValidator(Validator):
     def validate(self, document):
-        ok = regex.match('^[\d]{5}(?:-[\d]{4})?$', document.text)
+        ok = regex.match(r'^[\d]{5}(?:-[\d]{4})?$', document.text)
         if not ok:
             raise ValidationError(
                 message='Please do not enter a null field.',
@@ -99,6 +99,12 @@ questions = [
         'message': 'Export Privacy, Stripe or your own cards?',
         'choices': ['Privacy', 'Stripe', 'Own'],
         'filter': lambda val: val.lower()
+    },
+    {
+        'type': 'input',
+        'name': 'ownImport',
+        'message': 'What is the filename of the csv import?',
+        'when': lambda answers: answers['cardProvider'] == 'own'
     },
     {
         'type': 'input',
@@ -141,14 +147,14 @@ questions = [
         'type': 'input',
         'name': 'stripeValue',
         'message': 'How many Stripe cards would you like to create?',
-        'when': lambda answers: answers['cardProvider'] == 'stripe',
+        'when': lambda answers: answers['stripeNewCards'] == 'new',
         'validate': NotBlankValidator
     },
     {
         'type': 'input',
         'name': 'stripeCardholder',
         'message': 'Enter a cardholder id which you would like to create new cards under.',
-        'when': lambda answers: answers['cardProvider'] == 'stripe',
+		'when': lambda answers: answers['stripeNewCards'] == 'new',
         'validate': NotBlankValidator
     },
     {
@@ -168,8 +174,7 @@ questions = [
         'type': 'input',
         'name': 'emailPrefix',
         'message': 'Enter an email prefix for your catchall, otherwise leave blank and one will be generated randomly.',
-        'when': lambda answers: answers['email'][0] == "@",
-        'validate': NotBlankValidator
+        'when': lambda answers: answers['email'][0] == "@"
     },
     {
         'type': 'confirm',
@@ -314,10 +319,10 @@ if __name__ == "__main__":
     if (promptsettings['cardProvider'] == "privacy"):
         privacysession = PrivacySession(promptsettings['privacyEmail'], promptsettings['privacyPassword'])
         if (promptsettings['privacyUnused'] == "unused"):
-            cardlist = privacy.findNewCards()
+            cardlist = privacysession.findNewCards()
             print("Total cards found: " + str(len(cardlist)))
         else:
-            cardlist = privacy.getCards()
+            cardlist = privacysession.getCards()
             print("Total cards found: " + str(len(cardlist)))
     elif (promptsettings['cardProvider'] == "stripe"):
         stripesession = StripeSession(promptsettings['stripeToken'])
@@ -330,7 +335,9 @@ if __name__ == "__main__":
             print("Getting all stripe cards...")
             cardlist = stripesession.getAllCards()
     else:
-        pprint("Using own cards")
+        print("Importing cards from {}".format(promptsettings['ownImport']))
+        csvimport = CSVIO(promptsettings['ownImport'], "", templates, generator)
+        cardlist = csvimport.readCSV()
 
     print("Cards received, now generating profiles...")
     csvexporter = CSVIO("", "cardfile.csv", templates, generator)

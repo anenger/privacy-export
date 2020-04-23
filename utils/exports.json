@@ -66,5 +66,13 @@
 		"BillingZip":"ZIP",
 		"BillingCountry":"US",
 		"BillingPhone":"PHONE"
+	},
+	"import":{
+		"CardType":"",
+		"CardName":"",
+		"CardNumber":"",
+		"CardCVV":"",
+		"CardMonth":"",
+		"CardYear":""
 	}
 }

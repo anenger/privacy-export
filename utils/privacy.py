@@ -27,7 +27,7 @@ class PrivacySession:
     	print("Starting pre-login...")
     	r = requests.get('https://privacy.com/login', headers=headers)
     	print("Got pre-login response")
-    	if (r.status_code == requests.codes.ok):
+    	if (r.status_code == 200):
     		try:
     			print("Got sessionID header")
     			return r.headers['set-cookie'].split("; ")[0].replace('sessionID=', '')
@@ -62,14 +62,7 @@ class PrivacySession:
     	if (r.status_code == 200):
     		try:
     			body = r.json()
-    			if 'oneTimeCode' in body:
-    				if (body['oneTimeCode'] == True):
-    					print(body)
-    					code = raw_input("Please enter the one time code sent to the specified email: ")
-    					userToken = body['userToken']
-    					codeLogin(sessionid, code, userToken)
-    			else:
-    				return body['token']
+    			return body['token']
     		except Exception as e:
     			print("Error on login")
     			print(e)
@@ -99,7 +92,7 @@ class PrivacySession:
     	print('Getting transactions...')
     	r = requests.get('https://privacy.com/api/v1/transaction',cookies=cookies, headers=headers)
     	print('Got transaction response')
-    	if (r.status_code == requests.codes.ok):
+    	if (r.status_code == 200):
     		try:
     			return r.json()
     		except:
@@ -148,12 +141,12 @@ class PrivacySession:
     	print('Getting cards...')
     	r = requests.get('https://privacy.com/api/v1/card',cookies=cookies, headers=headers)
     	print('Got card response')
-    	if (r.status_code == requests.codes.ok):
+    	if (r.status_code == 200):
             try:
                 cardlist = []
                 for card in r.json()['cardList']:
                     if card['state'] == "OPEN":
-                        cardlist.append(Card(card['cardID'], card['PAN'], card['CVV'], card['expMonth'], card['expYear'], card['unused']))
+                        cardlist.append(Card(card['cardID'], "Visa", card['PAN'], card['CVV'], card['expMonth'], card['expYear'], card['unused']))
                 return cardlist
             except Exception as e:
                 print(e)
