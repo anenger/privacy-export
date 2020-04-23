@@ -147,21 +147,21 @@ questions = [
         'type': 'input',
         'name': 'stripeValue',
         'message': 'How many Stripe cards would you like to create?',
-        'when': lambda answers: answers['stripeNewCards'] == 'new',
+        'when': lambda answers: answers.get('stripeNewCards', "") == 'new',
         'validate': NotBlankValidator
     },
     {
         'type': 'input',
         'name': 'stripeCardholder',
         'message': 'Enter a cardholder id which you would like to create new cards under.',
-		'when': lambda answers: answers['stripeNewCards'] == 'new',
+        'when': lambda answers: answers.get('stripeNewCards', "") == 'new',
         'validate': NotBlankValidator
     },
     {
         'type': 'list',
         'name': 'export',
         'message': 'Which style would you like the cards exported in?',
-        'choices': ['EzMode4Chefs', 'Phantom', 'Ghost'],
+        'choices': ['EzMode4Chefs'],
         'filter': lambda val: val.lower()
     },
     {
@@ -336,7 +336,7 @@ if __name__ == "__main__":
             cardlist = stripesession.getAllCards()
     else:
         print("Importing cards from {}".format(promptsettings['ownImport']))
-        csvimport = CSVIO(promptsettings['ownImport'], "", templates, generator)
+        csvimport = CSVIO(promptsettings['ownImport'] + ".csv", "", templates, generator)
         cardlist = csvimport.readCSV()
 
     print("Cards received, now generating profiles...")

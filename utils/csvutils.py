@@ -29,10 +29,10 @@ class CSVIO:
                 export['BillingZip'] = self.generator.zip
                 export['BillingCountry'] = "US"
                 export['BillingPhone'] = self.generator.genPhone()
-                export['ProfileName'] = card.id
+                export['ProfileName'] = card.cardid
                 export['Email'] = self.generator.genEmail()
                 export['CardNumber'] = card.number
-                export['CardType'] = "Visa"
+                export['CardType'] = card.cardtype
                 export['CardCVV'] = card.cvv
                 export['CardMonth'] = card.expmonth
                 export['CardYear'] = card.expyear
@@ -40,10 +40,11 @@ class CSVIO:
 
     def readCSV(self):
         cardlist = []
-        with open(self.infile, mode="r") as cardfile:
-            reader = csv.DictReader(cardfile, self.templates['import'].keys(), lineterminator="\n")
+        with open(self.infile, newline='') as cardfile:
+            reader = csv.DictReader(cardfile)
             i = 0
             for row in reader:
                 i+=1
+                print(row)
                 cardlist.append(Card("Card{}".format(i), row['CardType'], row['CardNumber'], row['CardCVV'], row['CardMonth'], row['CardYear'], True))
         return cardlist
