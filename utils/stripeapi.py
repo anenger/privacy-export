@@ -40,12 +40,19 @@ class StripeSession:
             print("Could not activate card.")
             return False
 
-    def getAllCards(self):
-        cards = stripe.issuing.Card.list(limit=100,status="active")
-        carddata = []
-        for card in cards['data']:
-             carddata.append(self.getCardDetails(card['id']))
-        return carddata
+    def getAllCards(self, cardholder):
+        if cardholder:
+            cards = stripe.issuing.Card.list(limit=100,status="active",cardholder=cardholder)
+            carddata = []
+            for card in cards['data']:
+                carddata.append(self.getCardDetails(card['id']))
+            return carddata
+        else:
+            cards = stripe.issuing.Card.list(limit=100,status="active")
+            carddata = []
+            for card in cards['data']:
+                carddata.append(self.getCardDetails(card['id']))
+            return carddata
 
     def createCards(self, number, cardholder):
         cards = []

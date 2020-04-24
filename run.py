@@ -143,6 +143,12 @@ questions = [
         'filter': lambda val: val.lower(),
         'when': lambda answers: answers['cardProvider'] == 'stripe'
     },
+	{
+        'type': 'input',
+        'name': 'stripeCardholderPreexisting',
+        'message': 'Enter a cardholder id for the cards you want to get. (or leave blank for all)',
+        'when': lambda answers: answers.get('stripeNewCards', "") == 'preexisting'
+    },
     {
         'type': 'input',
         'name': 'stripeValue',
@@ -333,7 +339,7 @@ if __name__ == "__main__":
             print("Created {} cards.".format(len(cardlist)))
         else:
             print("Getting all stripe cards...")
-            cardlist = stripesession.getAllCards()
+            cardlist = stripesession.getAllCards(promptsettings.get('stripeCardholderPreexisting', None))
     else:
         print("Importing cards from {}".format(promptsettings['ownImport']))
         csvimport = CSVIO(promptsettings['ownImport'] + ".csv", "", templates, generator)
