@@ -1,3 +1,9 @@
+#ignoring citi files
+citi.*
+
+#ignoring ds store
+.DS_Store
+
 #ignoring cardfile for privacy
 cardfile.csv
 
