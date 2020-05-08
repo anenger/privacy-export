@@ -113,7 +113,7 @@ class PrivacySession:
             if (transaction['cardID'] not in usedcardids):
                 usedcardids.append(transaction['cardID'])
         for card in cards:
-            if (int(card.id) not in usedcardids) or card.unused:
+            if (int(card.cardid) not in usedcardids) or card.unused:
                 newcards.append(card)
         return newcards
 
