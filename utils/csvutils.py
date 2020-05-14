@@ -16,7 +16,7 @@ class CSVIO:
 
     def writeEZMode(self, cards):
         with open(self.outfile, mode='w') as cardfile:
-            writer = csv.DictWriter(cardfile, self.templates['ezmode2'].keys(), lineterminator='\n')
+            writer = csv.DictWriter(cardfile, fieldnames=self.templates['ezmode2'].keys(), delimiter='\t', lineterminator='\n')
             writer.writeheader()
             for card in cards:
                 export = self.templates['ezmode2'].copy()

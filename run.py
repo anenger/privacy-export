@@ -346,8 +346,8 @@ if __name__ == "__main__":
         cardlist = csvimport.readCSV()
 
     print("Cards received, now generating profiles...")
-    csvexporter = CSVIO("", "cardfile.csv", templates, generator)
     if (promptsettings['export'] == "ezmode4chefs"):
+        csvexporter = CSVIO("", "cardfile.tsv", templates, generator)
         csvexporter.writeEZMode(cardlist)
 
     print("Generated profiles, check cardfile.csv for export!")

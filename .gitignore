@@ -5,7 +5,7 @@ citi.*
 .DS_Store
 
 #ignoring cardfile for privacy
-cardfile.csv
+cardfile.*
 
 #ignoring user saved settings
 *.json
