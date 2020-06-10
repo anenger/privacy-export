@@ -185,7 +185,12 @@ questions = [
     {
         'type': 'confirm',
         'name': 'addressJig',
-        'message': 'Do you need address jigging?',
+        'message': 'Do you need address line 1 jigging?',
+    },
+	{
+        'type': 'confirm',
+        'name': 'addressJig2',
+        'message': 'Do you need address line 2 jigging?',
     },
     {
         'type': 'confirm',
@@ -320,7 +325,7 @@ if __name__ == "__main__":
     else:
         prefix = ""
 
-    generator = Generator(promptsettings['firstNames'].split(','), promptsettings['lastNames'].split(','), promptsettings['email'], promptsettings['phoneNumber'], promptsettings['addressLine1'], promptsettings['addressLine2'], promptsettings['city'], promptsettings['state'], promptsettings['zipCode'], prefix, promptsettings['phoneJig'], promptsettings['addressJig'])
+    generator = Generator(promptsettings['firstNames'].split(','), promptsettings['lastNames'].split(','), promptsettings['email'], promptsettings['phoneNumber'], promptsettings['addressLine1'], promptsettings['addressLine2'], promptsettings['city'], promptsettings['state'], promptsettings['zipCode'], prefix, promptsettings['phoneJig'], promptsettings['addressJig'], promptsettings['addressJig2'])
 
     if (promptsettings['cardProvider'] == "privacy"):
         privacysession = PrivacySession(promptsettings['privacyEmail'], promptsettings['privacyPassword'])

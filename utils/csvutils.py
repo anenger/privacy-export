@@ -23,7 +23,7 @@ class CSVIO:
                 export['BillingFirst'], export['BillingLast'] = self.generator.genName()
                 export['CardName'] = export['BillingFirst'] + ' ' + export['BillingLast']
                 export['BillingLine1'] = self.generator.genStreet()
-                export['BillingLine2'] = self.generator.addressline2
+                export['BillingLine2'] = self.generator.genAddress2()
                 export['BillingCity'] = self.generator.city
                 export['BillingState'] = self.generator.state
                 export['BillingZip'] = self.generator.zip
