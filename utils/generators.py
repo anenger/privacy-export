@@ -84,7 +84,7 @@ class Generator:
         self.prefix = prefix
         self.jigPhone = jigPhone
         self.jigAddress = jigAddress
-		self.jigLine2 = jigLine2
+        self.jigLine2 = jigLine2
 
     def randomword(self, length):
         letters = string.ascii_uppercase
@@ -122,13 +122,13 @@ class Generator:
         else:
             return self.addressline1
 	
-	def genAddress2(self):
-		if (self.jigLine2):
-			apt = ['Unit', 'Apt', 'Suite']
-			apartment = random.choice(apt) + " " + str(random.randint(0,9)) + random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-			return apartment
-		else:
-			return self.addressline2
+    def genAddress2(self):
+        if (self.jigLine2):
+            apt = ['Unit', 'Apt', 'Suite']
+            apartment = random.choice(apt) + " " + str(random.randint(0,9)) + random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+            return apartment
+        else:
+            return self.addressline2
 
     def genName(self):
         return random.choice(self.firstname), random.choice(self.lastname)
