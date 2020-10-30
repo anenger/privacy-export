@@ -160,8 +160,11 @@ class PrivacySession:
                 cardlist = []
                 for card in r.json()['cardList']:
                     if card['state'] == "OPEN":
-                        cardlist.append(Card(
-                            card['cardID'], "Visa", card['PAN'], card['CVV'], card['expMonth'], card['expYear'], card['unused']))
+                        if card['PAN'][0] == "4":
+                            cardtype = "Visa"
+                        else:
+                            cardtype = "MasterCard"
+                        cardlist.append(Card(card['cardID'], cardtype, card['PAN'], card['CVV'], card['expMonth'], card['expYear'], card['unused']))
                 return cardlist
             except Exception as e:
                 print(e)

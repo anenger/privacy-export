@@ -89,6 +89,12 @@ loadsettings = [
         'message': 'Enter a filename to load settings from:',
         'when': lambda answers: answers['useSaved'] == True,
         'validate': NotBlankValidator
+    },
+    {
+        'type': 'input',
+        'name': 'quantity',
+        'message': 'How many times do you want to run the script?',
+        'validate': NotBlankValidator
     }
 ]
 
@@ -143,7 +149,7 @@ questions = [
         'filter': lambda val: val.lower(),
         'when': lambda answers: answers['cardProvider'] == 'stripe'
     },
-	{
+    {
         'type': 'input',
         'name': 'stripeCardholderPreexisting',
         'message': 'Enter a cardholder id for the cards you want to get. (or leave blank for all)',
@@ -187,7 +193,7 @@ questions = [
         'name': 'addressJig',
         'message': 'Do you need address line 1 jigging?',
     },
-	{
+    {
         'type': 'confirm',
         'name': 'addressJig2',
         'message': 'Do you need address line 2 jigging?',
@@ -267,6 +273,11 @@ savesettings = [
         'when': lambda answers: answers['saveSettings'] == True
     }
 ]
+
+def whitespace_only(file):
+    content = open(file, 'r').read()
+    if regex.search(r'^\s*$', content):
+        return True
 
 if __name__ == "__main__":
     templates = ""
@@ -350,9 +361,14 @@ if __name__ == "__main__":
         csvimport = CSVIO(promptsettings['ownImport'] + ".csv", "", templates, generator)
         cardlist = csvimport.readCSV()
 
-    print("Cards received, now generating profiles...")
-    if (promptsettings['export'] == "ezmode4chefs"):
-        csvexporter = CSVIO("", "cardfile.tsv", templates, generator)
-        csvexporter.writeEZMode(cardlist)
+    emptyfile = False
+    emptyfile = whitespace_only("cardfile.tsv")
+            
+    for i in range(0, int(loader['quantity'])):
+        print("Cards received, now generating profiles...")
+        if (promptsettings['export'] == "ezmode4chefs"):
+            csvexporter = CSVIO("", "cardfile.tsv", templates, generator)
+            csvexporter.writeEZMode(cardlist, emptyfile)
+            emptyfile = False
 
     print("Generated profiles, check cardfile.csv for export!")

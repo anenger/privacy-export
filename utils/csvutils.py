@@ -14,10 +14,11 @@ class CSVIO:
         self.templates = templates
         self.generator = generator
 
-    def writeEZMode(self, cards):
-        with open(self.outfile, mode='w') as cardfile:
+    def writeEZMode(self, cards, header):
+        with open(self.outfile, mode='a+') as cardfile:
             writer = csv.DictWriter(cardfile, fieldnames=self.templates['ezmode2'].keys(), delimiter='\t', lineterminator='\n')
-            writer.writeheader()
+            if header:
+                writer.writeheader()
             for card in cards:
                 export = self.templates['ezmode2'].copy()
                 export['BillingFirst'], export['BillingLast'] = self.generator.genName()
