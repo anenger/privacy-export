@@ -1,6 +1,9 @@
 #ignoring citi files
 citi.*
 
+#ignoring csvs for privacy
+*.csv
+
 #ignoring ds store
 .DS_Store
 

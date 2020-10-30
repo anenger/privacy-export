@@ -68,6 +68,8 @@
 		"BillingPhone":"PHONE"
 	},
 	"import":{
+		"Merchant":"",
+		"LeftOnCard":"",
 		"CardType":"",
 		"CardName":"",
 		"CardNumber":"",
