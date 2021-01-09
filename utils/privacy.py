@@ -68,8 +68,8 @@ class PrivacySession:
                     code = input("Please enter code sent to your email: ")
                     codedata = {
                         "code":code,
-                        "userToken":body['userToken'],
-                        "rememberDevice": True
+                        "rememberDevice": True,
+                        "userToken":body['userToken']
                     }
                     r_code = requests.post('https://privacy.com/auth/local/code', headers=headers, cookies=cookies, json=codedata)
                     if (r_code.status_code == 200):
